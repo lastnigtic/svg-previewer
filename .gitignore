@@ -1,0 +1,8 @@
+node_modules
+.vite
+server/*.go
+
+release
+dist
+assets
+static

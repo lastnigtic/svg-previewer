@@ -1,0 +1,35 @@
+{
+	"dependencies": {
+		"@koa/router": "^10.1.1",
+		"canvg": "^4.0.0",
+		"commander": "^9.2.0",
+		"koa": "^2.13.4",
+		"konva": "^8.3.8",
+		"open": "^8.4.0",
+		"simple-color-picker": "^1.0.5"
+	},
+	"devDependencies": {
+		"@types/koa__router": "^8.0.11",
+		"@types/node": "^17.0.35",
+		"nodemon": "^2.0.16",
+		"ts-node": "^10.8.0",
+		"typescript": "^4.6.4",
+		"vite": "^2.9.9"
+	},
+	"name": "svg-previewer",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "NODE_ENV=development nodemon index.ts -- -d assets & vite build -w",
+		"build": "./build.sh",
+		"prepublishOnly": "./build.sh"
+	},
+	"files": [
+		"dist"
+	],
+	"bin": {
+		"svg-previewer": "./dist/index.js"
+	},
+	"author": "lastnigtic@gmail.com",
+	"license": "MIT",
+	"description": "用于预览管理文件夹内svg文件"
+}
