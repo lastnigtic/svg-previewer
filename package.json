@@ -33,6 +33,10 @@
 		"svg-previewer": "./dist/index.js"
 	},
 	"author": "lastnigtic@gmail.com",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/lastnigtic/svg-previewer.git"
+	},
 	"license": "MIT",
 	"description": "用于预览管理文件夹内svg文件"
 }
