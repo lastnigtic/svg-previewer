@@ -19,7 +19,7 @@
 		"vite": "^2.9.9"
 	},
 	"name": "svg-previewer",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"scripts": {
 		"dev": "NODE_ENV=development nodemon index.ts -- -d images & vite build -w",
 		"build": "./build.sh",
