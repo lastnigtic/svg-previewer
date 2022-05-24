@@ -1,11 +1,13 @@
 import Konva from 'konva';
 import { Shape } from 'konva/lib/Shape';
 import ColorPicker from 'simple-color-picker';
+import { throttle } from 'lodash-es';
 import './style.css';
 
 const $container = document.querySelector('#app') as HTMLDivElement;
 
 const defaultLen = 120;
+const PadLen = 50;
 var MaxWidth = 400;
 
 const ThemeColor = '#002fA7';
@@ -110,18 +112,24 @@ const addImage = (
 				const { naturalWidth, naturalHeight } = image;
 				const ratio = naturalWidth / naturalHeight;
 				layer.add(imageNode);
+
+				let plusX = 0;
+				let plusY = 0;
 				let defaultWidth = defaultLen;
 				let defaultHeight = defaultLen / ratio;
 				if (naturalWidth < naturalHeight) {
 					defaultWidth = defaultLen * ratio;
 					defaultHeight = defaultLen;
+					plusX = (defaultLen - defaultWidth) / 2;
+				} else {
+					plusY = (defaultLen - defaultHeight) / 2;
 				}
 
 				imageNode.setAttrs({
 					width: defaultWidth,
 					height: defaultHeight,
-					x: pos.x,
-					y: pos.y,
+					x: pos.x + plusX,
+					y: pos.y + plusY,
 					ratio,
 					draggable: true,
 				});
@@ -207,8 +215,6 @@ const addImage = (
 					updatePosition(tr.size());
 				};
 
-				tr.on('transform', () => updatePosition(tr.size()));
-
 				layer.add(tr);
 				tr.nodes([imageNode]);
 				resolve({ imageNode, showCtrl, hideCtrl });
@@ -223,28 +229,24 @@ const addImage = (
 const getNextPos = ({
 	x,
 	y,
-	width,
-	height,
 	padLen,
 	containerWidth,
 }: {
 	x: number;
 	y: number;
-	width: number;
-	height: number;
 	padLen: number;
 	containerWidth: number;
 }) => {
-	const exceedWidth = x + width + 2 * padLen > containerWidth;
+	const exceedWidth = x + 2 * defaultLen + 2 * padLen > containerWidth;
 
 	if (exceedWidth) {
 		return {
 			x: padLen,
-			y: y + height + padLen,
+			y: y + defaultLen + padLen,
 		};
 	}
 	return {
-		x: x + width + padLen,
+		x: x + defaultLen + padLen,
 		y,
 	};
 };
@@ -254,18 +256,16 @@ const getNextPos = ({
 	const res = await fetch('/svg');
 	const json = await res.json();
 	let renderInfo = {
-		x: 200,
+		x: 220,
 		y: 20,
-		width: defaultLen,
-		height: defaultLen,
-		padLen: 40,
+		padLen: PadLen,
 		containerWidth: window.innerWidth,
 	};
 
 	const imageNodes: { imageNode: Shape; showCtrl: () => void; hideCtrl: () => void }[] = [];
 	for (const src of json.uris) {
 		const res = await addImage(src, renderInfo);
-		renderInfo = { ...renderInfo, ...getNextPos({ ...renderInfo, ...res.imageNode.getClientRect() }) };
+		renderInfo = { ...renderInfo, ...getNextPos(renderInfo) };
 		imageNodes.push(res);
 	}
 
