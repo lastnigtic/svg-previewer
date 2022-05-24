@@ -33,6 +33,11 @@
 		"svg-previewer": "./dist/index.js"
 	},
 	"author": "lastnigtic@gmail.com",
+	"keywords": [
+		"svg",
+		"preview",
+		"manage"
+	],
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/lastnigtic/svg-previewer.git"
