@@ -215,6 +215,20 @@ const addImage = (
 					updatePosition(tr.size());
 				};
 
+				const wheelScale = throttle((e) => {
+					const diff = e.evt.deltaY;
+					let val = 1.1;
+					const scale2D = imageNode.scale();
+					if (diff < 0) val = 0.9;
+					scale2D.x *= val;
+					scale2D.y *= val;
+
+					imageNode.scale(scale2D);
+					updatePosition(tr.size());
+				}, 32);
+
+				imageNode.on('wheel', wheelScale);
+
 				layer.add(tr);
 				tr.nodes([imageNode]);
 				resolve({ imageNode, showCtrl, hideCtrl });
