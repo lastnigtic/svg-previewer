@@ -23,7 +23,8 @@
 	"scripts": {
 		"dev": "NODE_ENV=development nodemon index.ts -- -d images & vite build -w",
 		"build": "./build.sh",
-		"prepublishOnly": "./build.sh"
+		"prepublishOnly": "./build.sh",
+		"postpublish": "git push"
 	},
 	"files": [
 		"dist"
