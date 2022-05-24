@@ -112,7 +112,7 @@ const addImage = (
 				layer.add(imageNode);
 				let defaultWidth = defaultLen;
 				let defaultHeight = defaultLen / ratio;
-				if (width < height) {
+				if (naturalWidth < naturalHeight) {
 					defaultWidth = defaultLen * ratio;
 					defaultHeight = defaultLen;
 				}
