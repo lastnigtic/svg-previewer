@@ -276,18 +276,15 @@ const getNextPos = ({
 		containerWidth: window.innerWidth,
 	};
 
-	const imageNodes: { imageNode: Shape; showCtrl: () => void; hideCtrl: () => void }[] = [];
-	for (const src of json.uris) {
-		const res = await addImage(src, renderInfo);
-		renderInfo = { ...renderInfo, ...getNextPos(renderInfo) };
-		imageNodes.push(res);
-	}
+	const hideCtrlArr: Array<() => void> = [];
+	const hideCtrlHandler = () => hideCtrlArr.map((fn) => fn());
 
-	const hideCtrl = () => imageNodes.map(({ hideCtrl }) => hideCtrl());
-
-	imageNodes.forEach(({ imageNode, showCtrl }) => {
+	json.uris.forEach(async (src: string, idx: number) => {
+		idx && (renderInfo = { ...renderInfo, ...getNextPos(renderInfo) });
+		const { imageNode, hideCtrl, showCtrl } = await addImage(src, renderInfo);
+		hideCtrlArr.push(hideCtrl);
 		imageNode.on('mousedown', () => {
-			hideCtrl();
+			hideCtrlHandler();
 			showCtrl();
 		});
 	});
